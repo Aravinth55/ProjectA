@@ -8,37 +8,51 @@ import org.springframework.beans.factory.annotation.Required;
 import org.springframework.stereotype.Component;
 //import org.springframework.beans.factory.annotation;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 public class Car {
 	@Autowired
 	private Engine petrolEngine;
-	@Autowired
+	@Autowired(required = false)
 	private Wheel alloy;
 
 	public Car() {
-		System.out.println(" Car Object created " + hashCode());
+		System.out.println("Car Object created " + hashCode());
 	}
 
+	public void begin() {
+		petrolEngine.start();
+	}
+
+	@PostConstruct
 	public void start() {
-		System.out.println("start AnnotationLc...");
+		System.out.println("Started annotation....");
 	}
 
+	@PreDestroy
 	public void stop() {
-		System.out.println("stop AnnotationLc...");
+		System.out.println("Stopped Annotation...");
 	}
 
 	public void move() {
 		alloy.rotate();
 	}
 }
+
 @Component("SportsCar")
 class SportsCar extends Car {
 	public SportsCar() {
-		System.out.println("sports car object created: "+hashCode());
+		System.out.println("SportsCar object is created :" + hashCode());
 	}
-	@Component("SuvCar")
-	class SuvCar extends Car {
-		public SuvCar() {
-			System.out.println("Suv car object created: "+hashCode());
-		}
+}
+
+@Component("SuvCar")
+class SuvCar extends Car {
+	public SuvCar() {
+		System.out.println("Suv Car object is created : " + hashCode());
 	}
 }
